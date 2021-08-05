@@ -10,12 +10,12 @@ module.exports = {
         "any.required": `email is a required field`,
         }),
         password: Joi.string().required().empty().regex(/^[a-zA-Z]{6,16}$/).min(6).max(16).messages({
-        "string.base": `pass should be a type of 'text'`,
-        "string.empty": `pass cannot be an empty field`,
-        "string.min": "pass should be of minimum 6 characters",
-        "string.max": "pass should be of maximum 16 characters",
-        "string.pattern.base": "pass must contains lower case, upper case and between 6 and 16 characters",
-        "any.required": `pass is a required field`,
+        "string.base": `password should be a type of 'text'`,
+        "string.empty": `password cannot be an empty field`,
+        "string.min": "password should be of minimum 6 characters",
+        "string.max": "password should be of maximum 16 characters",
+        "string.pattern.base": "password must contains lower case, upper case and between 6 and 16 characters",
+        "any.required": `password is a required field`,
         })
     })
 }
