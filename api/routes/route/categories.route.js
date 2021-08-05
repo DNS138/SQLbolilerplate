@@ -10,6 +10,7 @@ router.get("/", categoriesController.categoryList);
 router.get("/:categoryid", categoriesController.getCategoryByCategoryId);
 router.post("/", [authenticate, validator.body(categoryValidation.validateCategory)], categoriesController.addCategory);
 router.put("/:categoryid", [authenticate, validator.body(categoryValidation.validateCategory)], categoriesController.updateCategory);
-router.delete("/:categoryid", authenticate ,categoriesController.removeCategoryById);
-
+router.delete("/:categoryid", authenticate, categoriesController.removeCategoryById);
 module.exports = router;
+
+
