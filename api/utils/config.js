@@ -10,4 +10,4 @@ module.exports = {
     HTTP_NOT_FOUND : 404,
     HTTP_SERVER_ERROR: 500,
     HTTP_SERVICE_NOT_AVAILABLE: 503
-}
+};

@@ -1,31 +1,58 @@
-const { GeneralError, BadRequest } = require("../utils/error");
-const config = require("../utils/config");
+const { GeneralError, BadRequest } = require('../utils/error');
+const config = require('../utils/config');
 
-function handleErrors(err, req, res, next) {
-  if (err instanceof GeneralError) {
-    return res.status(err.statusCode !== "" ? err.statusCode : err.getCode()).json({
-      status: config.ERROR,
-      code: err.statusCode !== "" ? err.statusCode : err.getCode(),
-      message: err.message,
-      result: err.result !== "" ? err.result : undefined,
-      // stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
-    });
+const handleErr = function handleErrors(err, req, res) {
+  if (err instanceof GeneralError && err.statusCode !== '') {
+    if(err.result !== ''){
+      return res.status(err.statusCode).json({
+        status: config.ERROR,
+        code: err.statusCode,
+        message: err.message,
+        result: err.result
+      });
+    }else {
+      return res.status(err.statusCode).json({
+        status: config.ERROR,
+        code: err.statusCode,
+        message: err.message,
+        result: undefined
+      });
+    }
+   } else if (err instanceof GeneralError && err.statusCode === '') {
+     if(err.result !== ''){
+      return res.status(err.statusCode).json({
+        status: config.ERROR,
+        code: err.getCode(),
+        message: err.message,
+        result: err.result
+      });
+     }else{
+      return res.status(err.getCode()).json({
+        status: config.ERROR,
+        code: err.getCode(),
+        message: err.message,
+        result: undefined
+      });
+     }
+  }else{
+    if(err.statusCode !== ''){
+      return res.status(config.HTTP_SERVER_ERROR).json({
+        status: config.ERROR,
+        code: err.statusCode,
+        message: err.message
+      });
+    }else{
+      return res.status(config.HTTP_SERVER_ERROR).json({
+        status: config.ERROR,
+        code: config.HTTP_SERVER_ERROR,
+        message: err.message
+      });
+    }
   }
-  
-  else{
-    return res.status(config.HTTP_SERVER_ERROR).json({
-      status: config.ERROR,
-      code: err.statusCode !== "" ? err.statusCode : config.HTTP_SERVER_ERROR,
-      message: err.message,
-      // stack: err.stack,
-    });
-  }
-  
 };
 
 const handleJoiErrors = (err, req, res, next) => {
   if (err && err.error && err.error.isJoi) {
-    // we had a joi error, let's return a custom 400 json response
     const customErrorResponse = {};
       if (err.error.details.length !== 0) {
           err.error.details.forEach(item => {
@@ -33,14 +60,13 @@ const handleJoiErrors = (err, req, res, next) => {
                   message: item.message,
                   context: item.context.label,
                   type: item.type
-              } 
-        })
+              };
+        });
     }
-    next(new BadRequest("Validation Error", customErrorResponse));
+    next(new BadRequest('Validation Error', customErrorResponse));
   } else {
-    // pass on to another error handler
     next(err);
   }
 };
 
-module.exports = { handleErrors, handleJoiErrors };
+module.exports = { handleErr, handleJoiErrors };

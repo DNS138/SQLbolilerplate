@@ -1,9 +1,9 @@
-const mysql = require("mysql");
-const { ServiceNotAvailable, BadRequest } = require("../utils/error");
-
+const mysql = require('mysql');
+const { ServiceNotAvailable, BadRequest } = require('../utils/error');
+const argLength = 2;
 const sqlConnection = function sqlConnection(sql, values, next) {
 
-  if (arguments.length === 2) {
+  if (arguments.length === argLength) {
     next = values;
     values = null;
   }
@@ -13,7 +13,7 @@ const sqlConnection = function sqlConnection(sql, values, next) {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    multipleStatements: true,
+    multipleStatements: true
   });
 
   connection.connect(function (err) {
@@ -28,7 +28,7 @@ const sqlConnection = function sqlConnection(sql, values, next) {
     if (err) {
         next(new BadRequest('Error in Database Query'),null);
     }
-    next.apply(this, arguments);
+    next.apply(this.arguments);
   });
 };
 

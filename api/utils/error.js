@@ -1,11 +1,15 @@
-const config = require("./config");
+const config = require('./config');
 
 class GeneralError extends Error {
-    constructor(message, result = "", statusCode = "") {
+    constructor(message, result = '', statusCode = '') {
     super();
     this.message = message;
     this.statusCode = statusCode;
-    this.result = result === "" ? undefined : result;
+    if(result === ''){
+      this.result = null;
+    } else{
+      this.result = result;
+    }
   }
   getCode() {
     if (this instanceof BadRequest) {
@@ -16,8 +20,9 @@ class GeneralError extends Error {
       return config.HTTP_UN_AUTHORIZED;
     } else if (this instanceof ServiceNotAvailable) {
       return config.HTTP_SERVICE_NOT_AVAILABLE;
+    }else{
+      return config.HTTP_SERVER_ERROR;
     }
-    return config.HTTP_SERVER_ERROR;
   }
 }
 class BadRequest extends GeneralError {}
@@ -30,5 +35,5 @@ module.exports = {
   BadRequest,
   NotFound,
   UnAuthorized,
-  ServiceNotAvailable,
+  ServiceNotAvailable
 };

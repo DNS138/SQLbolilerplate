@@ -7,10 +7,11 @@ const handleResponse = (response, req, res, next) => {
             status: config.SUCCESS,
             code: config.HTTP_SUCCESS,
             message: response.message,
-            result: response.result,
-        })
+            result: response.result
+        });
     }
     next(response);
-}
+    return 0;
+};
 
 module.exports = handleResponse;

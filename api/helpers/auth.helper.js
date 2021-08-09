@@ -1,35 +1,31 @@
-const jwt = require("jsonwebtoken");
-const { UnAuthorized } = require("../utils/error");
+const jwt = require('jsonwebtoken');
+const { UnAuthorized } = require('../utils/error');
 
-
+const seven = 7;
 const authenticate = (req, res, next) => {
-  let token = req.headers["x-access-token"] || req.headers["authorization"];
+  let token = req.headers['x-access-token'] || req.headers['authorization'];
   if (token) {
-    if (token.startsWith("Bearer ")) {
-      token = token.slice(7, token.length); // Remove Bearer from string
+    if (token.startsWith('Bearer ')) {
+      token = token.slice(seven, token.length);
     }
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
       if (err) {
-        console.log(err);
-        next(new UnAuthorized("auth token is invalid"));
+        next(new UnAuthorized('auth token is invalid'));
       } else {
         req.decoded = decoded;
         next();
       }
     });
   } else {
-    next(new UnAuthorized("auth token not supplied"));
+    next(new UnAuthorized('auth token not supplied'));
   }
 };
 
-/**
- * Middeware for Generating a new JWT Token
- */
-const generateToken = (data) => {
-  let token = jwt.sign(data, process.env.SECRET_KEY, {
-    expiresIn: process.env.TOKEN_EXPIRY,
+const generateToken = data => {
+  return jwt.sign(data, process.env.SECRET_KEY, {
+    expiresIn: process.env.TOKEN_EXPIRY
   });
-  return token;
+
 };
 
 module.exports = {

@@ -1,13 +1,17 @@
 const config = require('./config');
 
-class GeneralResponse { 
-    constructor(message,result,statusCode = "") { 
+class GeneralResponse {
+    constructor(message,result,statusCode = '') {
         this.message = message;
-        this.statusCode = statusCode == "" ? config.HTTP_SUCCESS : statusCode;
+        if(statusCode === ''){
+            this.statusCode = config.HTTP_SUCCESS;
+        } else{
+            this.statusCode = statusCode;
+        }
         this.result = result;
     }
 }
 
 module.exports = {
-    GeneralResponse,
-}
+    GeneralResponse
+};

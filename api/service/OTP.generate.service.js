@@ -1,11 +1,12 @@
-function generateOTP() {
+const maxOtp = 1000000;
+const genOtp = function generateOTP() {
 
-    var OTP = Math.random();
-    OTP = OTP * 1000000;
-    OTP = parseInt(OTP);
-  
+    let OTP = Math.random();
+    OTP = OTP * maxOtp;
+    OTP = parseInt(OTP, 10);
     return OTP;
-}
+};
 
-module.exports.generateOTP = generateOTP;
+module.exports.generateOTP = genOtp;
+
 
