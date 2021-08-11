@@ -13,7 +13,7 @@ const login = async (req, res, next) => {
         next(new GeneralError('user not found', undefined, config.HTTP_ACCEPTED));
       } else {
         const comparision = await bcrypt.compare(password, response[0].password);
-        if (comparision) {
+        if (comparision){
           const userdata = {
             username: response[0].email,
             name: response[0].name,
