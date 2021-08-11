@@ -1,14 +1,14 @@
-const { GeneralResponse } = require('../utils/response');
-const { GeneralError, NotFound } = require('../utils/error');
+import { GeneralResponse } from '../utils/response.js';
+import { GeneralError, NotFound } from '../utils/error.js';
 
-const categoryModel = require('../models/categories.model');
-const config = require('../utils/config');
+import { categoriesModel } from '../models/categories.model.js';
+import {config} from '../utils/config.js';
 const errNotFound = 404;
 
 
-exports.categoryList = async (req, res, next) => {
+const categoryList = async (req, res, next) => {
   try {
-    categoryModel.getCategories((err, response) => {
+    categoriesModel.getCategories((err, response) => {
       if (err) {
         next(new NotFound('no categories found'));
       } else {
@@ -20,10 +20,10 @@ exports.categoryList = async (req, res, next) => {
   }
 };
 
-exports.getCategoryByCategoryId = async (req, res, next) => {
+const getCategoryByCategoryId = async (req, res, next) => {
   const { categoryid } = req.params;
   try {
-    categoryModel.getCategoryById(categoryid, (err, response) => {
+    categoriesModel.getCategoryById(categoryid, (err, response) => {
 
       if (err == null && response.length === 0) {
         next(new GeneralError('category not found'));
@@ -36,9 +36,9 @@ exports.getCategoryByCategoryId = async (req, res, next) => {
   }
 };
 
-exports.addCategory = async (req, res, next) => {
+const addCategory = async (req, res, next) => {
   const { name } = req.body;
-  categoryModel.addCategory(
+  categoriesModel.addCategory(
     { name },
     (err, response) => {
       if (err != null || response.affectedRows === 0) {
@@ -56,11 +56,11 @@ exports.addCategory = async (req, res, next) => {
   );
 };
 
-exports.updateCategory = async (req, res, next) => {
+const updateCategory = async (req, res, next) => {
   const { categoryid } = req.params;
   const { name } = req.body;
 
-  categoryModel.updateCategory(
+  categoriesModel.updateCategory(
     categoryid,
     { name },
     (err, response) => {
@@ -81,10 +81,10 @@ exports.updateCategory = async (req, res, next) => {
   );
 };
 
-exports.removeCategoryById = async (req, res, next) => {
+const removeCategoryById = async (req, res, next) => {
   const { categoryid } = req.params;
 
-  categoryModel.removeOneCategory(
+  categoriesModel.removeOneCategory(
     categoryid,
     (err, response) => {
       if (err != null && !response){
@@ -102,3 +102,4 @@ exports.removeCategoryById = async (req, res, next) => {
   );
 };
 
+export const categoriesController = { categoryList, getCategoryByCategoryId, addCategory, updateCategory, removeCategoryById };

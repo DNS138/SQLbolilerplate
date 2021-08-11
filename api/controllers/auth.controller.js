@@ -1,11 +1,11 @@
-const bcrypt = require('bcrypt');
-const { generateToken } = require('../helpers/auth.helper');
-const { GeneralResponse } = require('../utils/response');
-const { GeneralError, UnAuthorized } = require('../utils/error');
-const usersModel = require('../models/users.model');
-const config = require('../utils/config');
+import bcrypt from 'bcrypt';
+import { generateToken } from '../helpers/auth.helper.js';
+import { GeneralResponse } from '../utils/response.js';
+import { GeneralError, UnAuthorized } from '../utils/error.js';
+import {usersModel} from '../models/users.model.js';
+import {config} from '../utils/config.js';
 
-exports.login = async (req, res, next) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     usersModel.isUserExistByEmailId(email, async (err, response) => {
@@ -17,8 +17,7 @@ exports.login = async (req, res, next) => {
           const userdata = {
             username: response[0].email,
             name: response[0].name,
-            userid: response[0].userid
-          };
+            userid: response[0].userid};
           const token = generateToken(userdata);
           next(
             new GeneralResponse('user successfully login', { token }, config.HTTP_SUCCESS)
@@ -32,3 +31,5 @@ exports.login = async (req, res, next) => {
     next(new GeneralError('user login failure'));
   }
 };
+
+export const authController = { login };

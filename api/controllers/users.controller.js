@@ -1,11 +1,11 @@
-const { GeneralResponse } = require('../utils/response');
-const { GeneralError, NotFound } = require('../utils/error');
-const usersModel = require('../models/users.model');
-const config = require('../utils/config');
-const bcrypt = require('bcrypt');
+import { GeneralResponse } from '../utils/response.js';
+import { GeneralError, NotFound } from '../utils/error.js';
+import { usersModel } from '../models/users.model.js';
+import { config } from '../utils/config.js';
+import bcrypt from 'bcrypt';
 const saltRounds = 10;
 
-exports.userList = async (req, res, next) => {
+const userList = async (req, res, next) => {
     try {
         usersModel.getUsers((err, response) => {
             if (err) {
@@ -19,7 +19,7 @@ exports.userList = async (req, res, next) => {
     }
 };
 
-exports.getUserByUserId = async (req, res, next) => {
+const getUserByUserId = async (req, res, next) => {
     const { userid } = req.query;
     try {
         usersModel.getUserById(userid, (err, response) => {
@@ -34,7 +34,7 @@ exports.getUserByUserId = async (req, res, next) => {
     }
 };
 
-exports.register = async (req, res, next) => {
+const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const encryptedPassword = await bcrypt.hash(password, saltRounds);
@@ -71,3 +71,5 @@ exports.register = async (req, res, next) => {
     next(new GeneralError('user registeration failed'));
   }
 };
+
+export const usersController = { userList, getUserByUserId, register };

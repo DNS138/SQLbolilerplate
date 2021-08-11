@@ -1,7 +1,7 @@
-const db = require('./db.helper');
+import { db } from './db.helper.js';
 let flag;
 
-const isValidMail = function isValidEmail(email) {
+export const isValidMail = function isValidEmail(email) {
 
     db(`Select id from users where email = '${email}'`, (err, result) => {
         if(result.length > 0) {
@@ -12,5 +12,3 @@ const isValidMail = function isValidEmail(email) {
     });
     return flag;
 };
-
-module.exports.isValidEmail = isValidMail;

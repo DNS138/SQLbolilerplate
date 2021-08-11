@@ -1,5 +1,5 @@
 const maxOtp = 1000000;
-const genOtp = function generateOTP() {
+const genOtp = () => {
 
     let OTP = Math.random();
     OTP = OTP * maxOtp;
@@ -7,6 +7,6 @@ const genOtp = function generateOTP() {
     return OTP;
 };
 
-module.exports.generateOTP = genOtp;
+export const generateOTP = genOtp;
 
 

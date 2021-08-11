@@ -1,6 +1,6 @@
-const db = require('../helpers/db.helper');
+import {db} from '../helpers/db.helper.js';
 
-exports.resetPassword = (newPassword, userid, callback) => {
+const resetPassword = (newPassword, userid, callback) => {
   db(
     `Update users set password = '${newPassword}' where id = '${userid}'`,
     (err, response) => {
@@ -13,7 +13,7 @@ exports.resetPassword = (newPassword, userid, callback) => {
   );
 };
 
-exports.verifyOTP = (enteredOTP, sentOTP, callback) => {
+const verifyOTP = (enteredOTP, sentOTP, callback) => {
   if(enteredOTP !== sentOTP) {
     callback(1);
   } else {
@@ -21,7 +21,7 @@ exports.verifyOTP = (enteredOTP, sentOTP, callback) => {
   }
 };
 
-exports.setNewPassword = (newPassword, email, callback) => {
+const setNewPassword = (newPassword, email, callback) => {
   db(
     `Update users set password = '${newPassword}' where email = '${email}'`,
     (err, response) => {
@@ -33,3 +33,5 @@ exports.setNewPassword = (newPassword, email, callback) => {
     }
   );
 };
+
+export const accountsModel = { resetPassword, verifyOTP, setNewPassword };

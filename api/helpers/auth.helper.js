@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken');
-const { UnAuthorized } = require('../utils/error');
+import jwt from 'jsonwebtoken';
+import { UnAuthorized } from '../utils/error.js';
 
 const seven = 7;
-const authenticate = (req, res, next) => {
+export const authenticate = (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers['authorization'];
   if (token) {
     if (token.startsWith('Bearer ')) {
@@ -21,14 +21,10 @@ const authenticate = (req, res, next) => {
   }
 };
 
-const generateToken = data => {
+export const generateToken = data => {
   return jwt.sign(data, process.env.SECRET_KEY, {
-    expiresIn: process.env.TOKEN_EXPIRY
-  });
+    expiresIn: process.env.TOKEN_EXPIRY}
+  );
 
 };
 
-module.exports = {
-  authenticate,
-  generateToken
-};

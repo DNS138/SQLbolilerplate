@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { validator } = require('../../helpers/validator.helper');
-const { authenticate } = require('../../helpers/auth.helper');
-const categoriesController = require('../../controllers/categories.controller');
+import { validator } from '../../helpers/validator.helper.js';
+import { authenticate } from '../../helpers/auth.helper.js';
+import { categoriesController } from '../../controllers/categories.controller.js';
 
-const categoryValidation = require('../../validations/category.validation');
+import { categoryValidation } from '../../validations/category.validation.js';
 
 const pathString = 'categoryid';
 
@@ -13,6 +13,7 @@ router.get(`/:${pathString}`, categoriesController.getCategoryByCategoryId);
 router.post('/', [authenticate, validator.body(categoryValidation.validateCategory)], categoriesController.addCategory);
 router.put(`/:${pathString}`, [authenticate, validator.body(categoryValidation.validateCategory)], categoriesController.updateCategory);
 router.delete(`/:${pathString}`, authenticate, categoriesController.removeCategoryById);
-module.exports = router;
+
+export const categoryRoute = router;
 
 

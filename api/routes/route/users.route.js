@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { validator } = require('../../helpers/validator.helper');
-const usersController = require('../../controllers/users.controller');
-const userValidation = require('../../validations/user.validation');
+import { validator } from '../../helpers/validator.helper.js';
+import { usersController } from '../../controllers/users.controller.js';
+import { userValidation } from '../../validations/user.validation.js';
 
 router.get('/',usersController.userList);
 router.get('/:userid',usersController.getUserByUserId);
 router.post('/',validator.body(userValidation.register),usersController.register);
 
-module.exports = router;
+export const userRoute = router;

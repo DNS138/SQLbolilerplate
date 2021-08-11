@@ -1,8 +1,6 @@
-const db = require('../helpers/db.helper');
+import {db} from '../helpers/db.helper.js';
 
-const selectStar = `id as projectid , title, description, categoryId, image`;
-
-exports.addProject = (project, arrayString, callback) => {
+const addProject = (project, arrayString, callback) => {
   db(
     `INSERT INTO projects (title, description, categoryId, image) values 
         ('${project.title}','${project.description}','${project.categoryId}','${arrayString}')`,
@@ -16,7 +14,7 @@ exports.addProject = (project, arrayString, callback) => {
   );
 };
 
-exports.getProjects = callback => {
+const getProjects = callback => {
 
   db(`Select * from projects`, (err, response) => {
     if (err == null && response != null) {
@@ -27,7 +25,7 @@ exports.getProjects = callback => {
   });
 };
 
-exports.getProjectById = (projectid, callback) => {
+const getProjectById = (projectid, callback) => {
   db(`SELECT projects.id,projects.title,projects.description,categories.name AS category,projects.image FROM projects INNER JOIN categories ON projects.categoryId = categories.id WHERE projects.id = '${projectid}'`, (err, response) => {
     if (err) {
       callback(err);
@@ -37,7 +35,7 @@ exports.getProjectById = (projectid, callback) => {
   });
 };
 
-exports.updateProject = (projectid, project, callback) => {
+const updateProject = (projectid, project, callback) => {
   db(`Update projects set title = '${project.title}',
     categoryId = '${project.categoryId}',
     description = '${project.description}',
@@ -51,8 +49,7 @@ exports.updateProject = (projectid, project, callback) => {
   });
 };
 
-
-exports.removeOneProject = (projectid, callback) => {
+const removeOneProject = (projectid, callback) => {
   db(`Delete from projects where id = ${projectid}`, (err, response) => {
 
     if (err){
@@ -62,3 +59,5 @@ exports.removeOneProject = (projectid, callback) => {
     }
   });
 };
+
+export const projectsModel = { addProject, getProjects, getProjectById, updateProject, removeOneProject };

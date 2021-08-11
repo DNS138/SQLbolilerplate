@@ -1,20 +1,19 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.MAIL_ID,
-    pass: process.env.MAIL_PASSWORD
-  }
-});
+    pass: process.env.MAIL_PASSWORD}}
+);
 
-const sendMail = function sendEmail(email, OTP, callback) {
+const sendMail = (email, OTP, callback) => {
   const mailOptions = {
     from: process.env.MAIL_ID,
     to: email,
     subject: 'Sending verification code',
-    text: OTP
-  };
+    text: OTP};
+
 
   transporter.sendMail(mailOptions, function (error, data) {
 
@@ -26,7 +25,6 @@ const sendMail = function sendEmail(email, OTP, callback) {
   });
 };
 
-
-module.exports.sendEmail = sendMail;
+export const sendEmail = sendMail;
 
 

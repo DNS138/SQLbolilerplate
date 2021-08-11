@@ -1,8 +1,8 @@
-const db = require('../helpers/db.helper');
+import { db } from '../helpers/db.helper.js';
 const selectAll =  `id as userid ,name, email, password`;
 const selectStar = `id as userid ,name, email`;
 
-exports.addUser = (user, callback) => {
+const addUser = (user, callback) => {
   db(
     `INSERT INTO users (name,email,password) values ('${user.name}','${user.email}','${user.password}')`,
     (err, response) => {
@@ -14,7 +14,7 @@ exports.addUser = (user, callback) => {
     }
   );
 };
-exports.isUserExistByEmailId = (email, callback) => {
+const isUserExistByEmailId = (email, callback) => {
 
   db(`Select ${selectAll} from users where email = '${email}'`, (err, response) => {
     if (!err && response) {
@@ -24,7 +24,7 @@ exports.isUserExistByEmailId = (email, callback) => {
     }
   });
 };
-exports.getUsers = callback => {
+const getUsers = callback => {
     db(`Select ${selectStar} from users`, (err, response) => {
         if(!err && response.length >= 1){
           callback(null, response);
@@ -33,7 +33,7 @@ exports.getUsers = callback => {
         }
     });
 };
-exports.getUserById = (userid, callback) => {
+const getUserById = (userid, callback) => {
   db(`Select ${selectStar} from users where id = '${userid}'`, (err, response) => {
     if (!err && response && response.length > 0) {
       callback(null, response);
@@ -42,3 +42,5 @@ exports.getUserById = (userid, callback) => {
     }
   });
 };
+
+export const usersModel = { addUser, isUserExistByEmailId, getUserById, getUsers };

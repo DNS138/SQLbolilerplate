@@ -1,7 +1,7 @@
-const db = require('./db.helper');
+import {db} from './db.helper.js';
 let password;
 
-const getPass = function getPassword(userid) {
+export const getPassword = function getPass(userid) {
 
     db(`Select password from users where id = '${userid}'`, (err, result) => {
         if(err) {
@@ -13,4 +13,3 @@ const getPass = function getPassword(userid) {
     return password;
 };
 
-module.exports.getPassword = getPass;

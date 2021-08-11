@@ -1,34 +1,37 @@
-const express = require('express');
+
+import express from 'express';
+import helmet from 'helmet';
+import {} from 'dotenv/config';
+import cors from 'cors';
+import winston from 'winston';
+import bodyParser from 'body-parser';
+import { mainRouter } from './api/routes/route.js';
+import { responseHelper } from './api/helpers/response.helper.js';
+import { errHelper } from './api/helpers/error.helper.js';
+import { loggerService } from './api/service/logging.service.js';
+
 const app = express();
 
-const helmet = require('helmet');
 app.use(helmet());
 
-const dotenv = require('dotenv');
-dotenv.config();
-
-const cors = require('cors');
 app.use(cors());
 
 app.use('/uploads', express.static('public/uploads'));
 
-const bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-app.use('/api/route', require('./api/routes/route'));
+app.use('/api/route', mainRouter);
 
-app.use(require('./api/helpers/response.helper'));
+app.use(responseHelper);
 
-app.use(require('./api/helpers/error.helper').handleJoiErrors);
+app.use(errHelper.handleJoiErrors);
 
-app.use(require('./api/helpers/error.helper').handleErr);
+app.use(errHelper.handleErr);
 
-const portNumber = 3001;
+ 
+loggerService();
 
-const winston = require('winston');
-require('./api/service/logging.service')();
-
-const port = process.env.PORT || portNumber;
+const port = process.env.PORT;
 app.listen(port, () => winston.info(`Listening on port ${port}...`));
 

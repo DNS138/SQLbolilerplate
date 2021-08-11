@@ -1,6 +1,6 @@
-const config = require('./config');
+import { config } from './config.js';
 
-class GeneralError extends Error {
+export class GeneralError extends Error {
     constructor(message, result = '', statusCode = '') {
     super();
     this.message = message;
@@ -25,15 +25,8 @@ class GeneralError extends Error {
     }
   }
 }
-class BadRequest extends GeneralError {}
-class NotFound extends GeneralError {}
-class UnAuthorized extends GeneralError {}
-class ServiceNotAvailable extends GeneralError {}
+export class BadRequest extends GeneralError {}
+export class NotFound extends GeneralError {}
+export class UnAuthorized extends GeneralError {}
+export class ServiceNotAvailable extends GeneralError {}
 
-module.exports = {
-  GeneralError,
-  BadRequest,
-  NotFound,
-  UnAuthorized,
-  ServiceNotAvailable
-};

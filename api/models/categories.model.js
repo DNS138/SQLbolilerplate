@@ -1,7 +1,7 @@
-const db = require('../helpers/db.helper');
+import {db} from '../helpers/db.helper.js';
 const selectStar = `id as categoryid ,name`;
 
-exports.addCategory = (category, callback) => {
+const addCategory = (category, callback) => {
   db(
     `INSERT INTO categories (name) values ('${category.name}')`,
     (err, response) => {
@@ -14,7 +14,7 @@ exports.addCategory = (category, callback) => {
   );
 };
 
-exports.getCategories = callback => {
+const getCategories = callback => {
   db(`Select ${selectStar} from categories`, (err, response) => {
     if (!err && response) {
       callback(null, response);
@@ -24,7 +24,7 @@ exports.getCategories = callback => {
   });
 };
 
-exports.getCategoryById = (categoryid, callback) => {
+const getCategoryById = (categoryid, callback) => {
   db(`Select ${selectStar} from categories where id = '${categoryid}'`, (err, response) => {
     if (err) {
       callback(err, null);
@@ -34,7 +34,7 @@ exports.getCategoryById = (categoryid, callback) => {
   });
 };
 
-exports.updateCategory = (categoryid, category, callback) => {
+const updateCategory = (categoryid, category, callback) => {
   db(`Update categories set name = '${category.name}' where id = '${categoryid}'`, (err, response) => {
     if (err) {
       callback(err);
@@ -44,7 +44,7 @@ exports.updateCategory = (categoryid, category, callback) => {
   });
 };
 
-exports.removeOneCategory = (categoryid, callback) => {
+const removeOneCategory = (categoryid, callback) => {
   db(`Delete from categories where id = '${categoryid}'`, (err, response) => {
 
     if (err == null && response && response.length > 0) {
@@ -55,3 +55,4 @@ exports.removeOneCategory = (categoryid, callback) => {
   });
 };
 
+export const categoriesModel = { addCategory, getCategories, getCategoryById, updateCategory, removeOneCategory };

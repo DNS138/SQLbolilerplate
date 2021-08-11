@@ -1,5 +1,5 @@
-const { GeneralError, BadRequest } = require('../utils/error');
-const config = require('../utils/config');
+import { GeneralError, BadRequest } from '../utils/error.js';
+import { config } from '../utils/config.js';
 
 const handleErr = function handleErrors(err, req, res) {
   if (err instanceof GeneralError && err.statusCode !== '') {
@@ -8,15 +8,15 @@ const handleErr = function handleErrors(err, req, res) {
         status: config.ERROR,
         code: err.statusCode,
         message: err.message,
-        result: err.result
-      });
+        result: err.result}
+      );
     }else {
       return res.status(err.statusCode).json({
         status: config.ERROR,
         code: err.statusCode,
         message: err.message,
-        result: undefined
-      });
+        result: undefined}
+      );
     }
    } else if (err instanceof GeneralError && err.statusCode === '') {
      if(err.result !== ''){
@@ -24,29 +24,29 @@ const handleErr = function handleErrors(err, req, res) {
         status: config.ERROR,
         code: err.getCode(),
         message: err.message,
-        result: err.result
-      });
+        result: err.result}
+      );
      }else{
       return res.status(err.getCode()).json({
         status: config.ERROR,
         code: err.getCode(),
         message: err.message,
-        result: undefined
-      });
+        result: undefined}
+      );
      }
   }else{
     if(err.statusCode !== ''){
       return res.status(config.HTTP_SERVER_ERROR).json({
         status: config.ERROR,
         code: err.statusCode,
-        message: err.message
-      });
+        message: err.message}
+      );
     }else{
       return res.status(config.HTTP_SERVER_ERROR).json({
         status: config.ERROR,
         code: config.HTTP_SERVER_ERROR,
-        message: err.message
-      });
+        message: err.message}
+      );
     }
   }
 };
@@ -59,8 +59,7 @@ const handleJoiErrors = (err, req, res, next) => {
               customErrorResponse[`${item.context.key}`] = {
                   message: item.message,
                   context: item.context.label,
-                  type: item.type
-              };
+                  type: item.type};
         });
     }
     next(new BadRequest('Validation Error', customErrorResponse));
@@ -69,4 +68,4 @@ const handleJoiErrors = (err, req, res, next) => {
   }
 };
 
-module.exports = { handleErr, handleJoiErrors };
+export const errHelper = { handleErr, handleJoiErrors };

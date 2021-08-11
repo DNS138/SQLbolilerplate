@@ -1,6 +1,6 @@
-const config = require('./config');
+import { config } from './config.js';
 
-class GeneralResponse {
+export class GeneralResponse {
     constructor(message,result,statusCode = '') {
         this.message = message;
         if(statusCode === ''){
@@ -12,6 +12,3 @@ class GeneralResponse {
     }
 }
 
-module.exports = {
-    GeneralResponse
-};

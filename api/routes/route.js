@@ -1,11 +1,16 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
+import { authRoute } from './route/auth.route.js';
+import { projectRoute } from './route/projects.route.js';
+import { userRoute } from './route/users.route.js';
+import { categoryRoute } from './route/categories.route.js';
+import { accountRoute } from './route/accounts.route.js';
 
-const auth = require('./route/auth.route');
-const user = require('./route/users.route');
-const project = require('./route/projects.route');
-const category = require('./route/categories.route');
-const account = require('./route/accounts.route');
+const auth = authRoute;
+const user = userRoute;
+const project = projectRoute;
+const category = categoryRoute;
+const account = accountRoute;
 
 router.use('/auth', auth);
 router.use('/projects', project);
@@ -13,4 +18,4 @@ router.use('/categories', category);
 router.use('/users',user);
 router.use('/accounts',account);
 
-module.exports = router;
+export const mainRouter = router ;

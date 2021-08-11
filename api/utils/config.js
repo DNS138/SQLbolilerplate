@@ -1,4 +1,4 @@
-module.exports = {
+export const config = {
     ERROR : false,
     SUCCESS : true,
     HTTP_SUCCESS: 200,
@@ -9,5 +9,5 @@ module.exports = {
     HTTP_FORBIDDEN : 403,
     HTTP_NOT_FOUND : 404,
     HTTP_SERVER_ERROR: 500,
-    HTTP_SERVICE_NOT_AVAILABLE: 503
-};
+    HTTP_SERVICE_NOT_AVAILABLE: 503};
+

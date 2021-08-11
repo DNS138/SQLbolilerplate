@@ -1,5 +1,5 @@
-const mysql = require('mysql');
-const { ServiceNotAvailable, BadRequest } = require('../utils/error');
+import mysql from 'mysql';
+import { ServiceNotAvailable, BadRequest } from '../utils/error.js';
 const argLength = 2;
 const sqlConnection = function sqlConnection(sql, values, next) {
 
@@ -13,8 +13,8 @@ const sqlConnection = function sqlConnection(sql, values, next) {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    multipleStatements: true
-  });
+    multipleStatements: true }
+  );
 
   connection.connect(function (err) {
     if (err !== null) {
@@ -32,4 +32,4 @@ const sqlConnection = function sqlConnection(sql, values, next) {
   });
 };
 
-module.exports = sqlConnection;
+export const db = sqlConnection;

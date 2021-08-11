@@ -1,15 +1,15 @@
-const { GeneralResponse } = require('../utils/response');
-const { GeneralError, NotFound } = require('../utils/error');
-const projectModel = require('../models/projects.model');
-const config = require('../utils/config');
+import { GeneralResponse } from '../utils/response.js';
+import { GeneralError, NotFound } from '../utils/error.js';
+import { projectsModel } from '../models/projects.model.js';
+import {config} from '../utils/config.js';
 const err404 = 'Project not found';
 const errNotFound = 404;
 
 
-exports.projectList = async (req, res, next) => {
+const projectList = async (req, res, next) => {
 
   try {
-    projectModel.getProjects((err, response) => {
+    projectsModel.getProjects((err, response) => {
       if (err) {
         next(new NotFound('no projects found'));
       } else {
@@ -28,11 +28,11 @@ exports.projectList = async (req, res, next) => {
   }
 };
 
-exports.getProjectByProjectId = async (req, res, next) => {
+const getProjectByProjectId = async (req, res, next) => {
   const { projectid } = req.params;
 
   try {
-    projectModel.getProjectById(projectid, (err, response) => {
+    projectsModel.getProjectById(projectid, (err, response) => {
       if (err == null && response.length === 0 ) {
         next(new NotFound(err404, err, errNotFound));
       }else {
@@ -49,12 +49,12 @@ exports.getProjectByProjectId = async (req, res, next) => {
   }
 };
 
-exports.addProject = async (req, res, next) => {
+const addProject = async (req, res, next) => {
   const { title, description, categoryId, image } = req.body;
 
   const arrayString = req.files.map(a => a.filename).toString();
 
-  projectModel.addProject(
+  projectsModel.addProject(
     { title, description, categoryId, image },
     arrayString,
     (err, response) => {
@@ -73,13 +73,13 @@ exports.addProject = async (req, res, next) => {
   );
 };
 
-exports.updateProject = async (req, res, next) => {
+const updateProject = async (req, res, next) => {
 
   const { title, description, categoryId } = req.body;
   const { projectid } = req.params;
 
   const image = req.files.map(a => a.filename).toString();
-  projectModel.updateProject(
+  projectsModel.updateProject(
     projectid,
     { title, description, categoryId, image },
     (err, response) => {
@@ -100,10 +100,10 @@ exports.updateProject = async (req, res, next) => {
   );
 };
 
-exports.removeProjectById = async (req, res, next) => {
+const removeProjectById = async (req, res, next) => {
 
   const { projectid } = req.params;
-  projectModel.removeOneProject(
+  projectsModel.removeOneProject(
     projectid,
     (err, response) => {
       if (err){
@@ -122,4 +122,6 @@ exports.removeProjectById = async (req, res, next) => {
     }
   );
 };
+
+export const projectsController = { projectList, getProjectByProjectId, addProject, updateProject, removeProjectById };
 

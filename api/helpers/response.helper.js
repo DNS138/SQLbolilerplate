@@ -1,5 +1,5 @@
-const { GeneralResponse } = require('../utils/response');
-const config = require('../utils/config');
+import { GeneralResponse } from '../utils/response.js';
+import { config } from '../utils/config.js';
 
 const handleResponse = (response, req, res, next) => {
     if (response instanceof GeneralResponse) {
@@ -7,11 +7,11 @@ const handleResponse = (response, req, res, next) => {
             status: config.SUCCESS,
             code: config.HTTP_SUCCESS,
             message: response.message,
-            result: response.result
-        });
+            result: response.result}
+        );
     }
     next(response);
     return 0;
 };
 
-module.exports = handleResponse;
+export const responseHelper = handleResponse;

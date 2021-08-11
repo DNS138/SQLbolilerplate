@@ -1,19 +1,19 @@
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 const saltRounds = 10;
 
-const { GeneralResponse } = require('../utils/response');
-const { GeneralError, UnAuthorized } = require('../utils/error');
+import { GeneralResponse } from '../utils/response.js';
+import { GeneralError, UnAuthorized } from '../utils/error.js';
 
-const accountsModel = require('../models/accounts.model');
-const config = require('../utils/config');
-const { getPassword } = require('../helpers/getPassword.helper');
-const { isValidEmail } = require('../helpers/isValidEmail.helper');
+import { accountsModel } from '../models/accounts.model.js';
+import { config } from '../utils/config.js';
+import { getPassword } from '../helpers/getPassword.helper.js';
+import { isValidMail } from '../helpers/isValidEmail.helper.js';
 
-const { sendSMS } = require('../service/OTP.sms.service');
-const { sendEmail } = require('../service/OTP.email.service');
-const { generateOTP } = require('../service/OTP.generate.service');
+import { sendSmS } from '../service/OTP.sms.service.js';
+import { sendEmail } from '../service/OTP.email.service.js';
+import { generateOTP } from '../service/OTP.generate.service.js';
 
-exports.resetPassword = async (req, res, next) => {
+const resetPassword = async (req, res, next) => {
     const { currentPassword, newPassword, confirmPassword } = req.body;
     const { userid } = req.decoded;
 
@@ -53,11 +53,11 @@ exports.resetPassword = async (req, res, next) => {
 
 let OTP;
 
-exports.sendOTP = async (req, res, next) => {
+const sendOTP = async (req, res, next) => {
     const email = req.body.email;
     OTP = generateOTP();
 
-    const valid = isValidEmail(email);
+    const valid = isValidMail(email);
 
     if (valid) {
         sendEmail(
@@ -83,7 +83,7 @@ exports.sendOTP = async (req, res, next) => {
 };
 
 
-exports.verifyOTP = (req, res, next) => {
+const verifyOTP = (req, res, next) => {
     const enteredOTP = req.body.OTP;
 
     accountsModel.verifyOTP(enteredOTP, OTP, (err, response) => {
@@ -101,7 +101,7 @@ exports.verifyOTP = (req, res, next) => {
     });
 };
 
-exports.setNewPassword = async (req, res, next) => {
+const setNewPassword = async (req, res, next) => {
 
     const { email, newPassword, confirmPassword } = req.body;
 
@@ -135,11 +135,11 @@ exports.setNewPassword = async (req, res, next) => {
     }
 };
 
-exports.sendSMS = async (req, res, next) => {
+const sendSMS = async (req, res, next) => {
     const phoneNumber = req.body.phoneNumber;
     OTP = generateOTP();
 
-        sendSMS(
+        sendSmS(
             phoneNumber,
             OTP,
             (err, response) => {
@@ -158,4 +158,5 @@ exports.sendSMS = async (req, res, next) => {
         );
 };
 
+export const accountsController = { resetPassword, sendOTP, verifyOTP, setNewPassword, sendSMS };
 
