@@ -55,4 +55,4 @@ const removeOneCategory = (categoryid, callback) => {
   });
 };
 
-export const categoriesModel = { addCategory, getCategories, getCategoryById, updateCategory, removeOneCategory };
+export default { addCategory, getCategories, getCategoryById, updateCategory, removeOneCategory };

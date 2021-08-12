@@ -1,66 +1,42 @@
 import { GeneralError, BadRequest } from '../utils/error.js';
 import { config } from '../utils/config.js';
 
-const handleErr = function handleErrors(err, req, res) {
-  if (err instanceof GeneralError && err.statusCode !== '') {
-    if(err.result !== ''){
-      return res.status(err.statusCode).json({
-        status: config.ERROR,
-        code: err.statusCode,
-        message: err.message,
-        result: err.result}
-      );
-    }else {
-      return res.status(err.statusCode).json({
-        status: config.ERROR,
-        code: err.statusCode,
-        message: err.message,
-        result: undefined}
-      );
+const handleErr = (err, req, res, next) => {
+  next();
+  if (err instanceof GeneralError) {
+    if (err.statusCode === '') {
+      err.statusCode = err.getCode();
     }
-   } else if (err instanceof GeneralError && err.statusCode === '') {
-     if(err.result !== ''){
-      return res.status(err.statusCode).json({
-        status: config.ERROR,
-        code: err.getCode(),
-        message: err.message,
-        result: err.result}
-      );
-     }else{
-      return res.status(err.getCode()).json({
-        status: config.ERROR,
-        code: err.getCode(),
-        message: err.message,
-        result: undefined}
-      );
-     }
-  }else{
-    if(err.statusCode !== ''){
-      return res.status(config.HTTP_SERVER_ERROR).json({
-        status: config.ERROR,
-        code: err.statusCode,
-        message: err.message}
-      );
-    }else{
-      return res.status(config.HTTP_SERVER_ERROR).json({
-        status: config.ERROR,
-        code: config.HTTP_SERVER_ERROR,
-        message: err.message}
-      );
+    if (err.result === '') {
+      err.result = null;
     }
+    return res.status(err.statusCode).json({
+      status: config.ERROR,
+      code: err.statusCode,
+      message: err.message,
+      result: err.result}
+    );
   }
+  if (err.statusCode === '') {
+    err.statusCode = config.HTTP_SERVER_ERROR;
+  }
+  return res.status(config.HTTP_SERVER_ERROR).json({
+    status: config.ERROR,
+    code: err.statusCode,
+    message: err.message}
+  );
 };
 
 const handleJoiErrors = (err, req, res, next) => {
   if (err && err.error && err.error.isJoi) {
     const customErrorResponse = {};
-      if (err.error.details.length !== 0) {
-          err.error.details.forEach(item => {
-              customErrorResponse[`${item.context.key}`] = {
-                  message: item.message,
-                  context: item.context.label,
-                  type: item.type};
-        });
+    if (err.error.details.length !== 0) {
+      err.error.details.forEach(item => {
+        customErrorResponse[`${item.context.key}`] = {
+          message: item.message,
+          context: item.context.label,
+          type: item.type};
+      });
     }
     next(new BadRequest('Validation Error', customErrorResponse));
   } else {
@@ -68,4 +44,4 @@ const handleJoiErrors = (err, req, res, next) => {
   }
 };
 
-export const errHelper = { handleErr, handleJoiErrors };
+export default { handleJoiErrors, handleErr };

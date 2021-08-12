@@ -1,4 +1,4 @@
-import multer from 'multer';
+import multer from 'multer' ;
 
 const destination = (_req, _file, cb) => {
   cb(null, 'public/uploads/');

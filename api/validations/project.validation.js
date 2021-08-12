@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export const projectValidation = {
+export default {
     validateProject: Joi.object({
         title: Joi.string().required().empty().messages({
           'string.base': `first name should be a type of 'text'`,

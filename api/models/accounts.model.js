@@ -6,7 +6,7 @@ const resetPassword = (newPassword, userid, callback) => {
     (err, response) => {
       if (err) {
         callback(err);
-      } else {
+      } else{
         callback(null, response);
       }
     }

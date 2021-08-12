@@ -32,4 +32,4 @@ const login = async (req, res, next) => {
   }
 };
 
-export const authController = { login };
+export default { login };

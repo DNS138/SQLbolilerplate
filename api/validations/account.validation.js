@@ -5,7 +5,7 @@ const maxLen = 16;
 const otp = 6;
 const phone = 10;
 
-export const accountValidation = {
+export default {
 
     validatePassword: Joi.object({
         currentPassword: Joi.string().required().empty().regex(/^[a-zA-Z]{6,16}$/).min(minLen).max(maxLen).messages({

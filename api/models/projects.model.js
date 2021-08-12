@@ -25,10 +25,12 @@ const getProjects = callback => {
   });
 };
 
+const select = 'SELECT projects.id,projects.title,projects.description,categories.name ';
+
 const getProjectById = (projectid, callback) => {
-  db(`SELECT projects.id,projects.title,projects.description,categories.name AS category,projects.image FROM projects INNER JOIN categories ON projects.categoryId = categories.id WHERE projects.id = '${projectid}'`, (err, response) => {
-    if (err) {
-      callback(err);
+  db(`${select} AS category,projects.image FROM projects INNER JOIN categories ON projects.categoryId = categories.id WHERE projects.id = '${projectid}'`, (getErr, response) => {
+    if (getErr) {
+      callback(getErr);
     }else {
       callback(null, response);
     }
@@ -39,10 +41,10 @@ const updateProject = (projectid, project, callback) => {
   db(`Update projects set title = '${project.title}',
     categoryId = '${project.categoryId}',
     description = '${project.description}',
-    image =  '${project.image}' where id = ${projectid}`, (err, response) => {
+    image =  '${project.image}' where id = ${projectid}`, (updateErr, response) => {
 
-    if (err) {
-      callback(err);
+    if (updateErr) {
+      callback(updateErr);
     }else {
       callback(null, response);
     }
@@ -50,10 +52,10 @@ const updateProject = (projectid, project, callback) => {
 };
 
 const removeOneProject = (projectid, callback) => {
-  db(`Delete from projects where id = ${projectid}`, (err, response) => {
+  db(`Delete from projects where id = ${projectid}`, (removeErr, response) => {
 
-    if (err){
-      callback(err);
+    if (removeErr){
+      callback(removeErr);
     }else{
       callback(null, response);
     }

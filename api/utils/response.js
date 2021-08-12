@@ -11,4 +11,3 @@ export class GeneralResponse {
         this.result = result;
     }
 }
-

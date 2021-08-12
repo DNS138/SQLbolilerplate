@@ -2,8 +2,8 @@ import express from 'express';
 const router = express.Router();
 import { validator } from '../../helpers/validator.helper.js';
 import { authenticate } from '../../helpers/auth.helper.js';
-import { projectsController } from '../../controllers/projects.controller.js';
-import { projectValidation } from '../../validations/project.validation.js';
+import projectsController from '../../controllers/projects.controller.js';
+import projectValidation from '../../validations/project.validation.js';
 
 import { uploadImg } from '../../service/imageUpload.service.js';
 

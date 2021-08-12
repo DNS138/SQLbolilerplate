@@ -6,7 +6,7 @@ export const isValidMail = function isValidEmail(email) {
     db(`Select id from users where email = '${email}'`, (err, result) => {
         if(result.length > 0) {
             flag = 1;
-        } else {
+        } else{
             flag = 0;
         }
     });

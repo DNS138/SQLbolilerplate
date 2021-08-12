@@ -6,8 +6,8 @@ import cors from 'cors';
 import winston from 'winston';
 import bodyParser from 'body-parser';
 import { mainRouter } from './api/routes/route.js';
-import { responseHelper } from './api/helpers/response.helper.js';
-import { errHelper } from './api/helpers/error.helper.js';
+import responseHelper from './api/helpers/response.helper.js';
+import errr from './api/helpers/error.helper.js';
 import { loggerService } from './api/service/logging.service.js';
 
 const app = express();
@@ -25,11 +25,10 @@ app.use('/api/route', mainRouter);
 
 app.use(responseHelper);
 
-app.use(errHelper.handleJoiErrors);
+app.use(errr.handleJoiErrors);
 
-app.use(errHelper.handleErr);
+app.use(errr.handleErr);
 
- 
 loggerService();
 
 const port = process.env.PORT;

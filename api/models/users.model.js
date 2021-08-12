@@ -6,7 +6,7 @@ const addUser = (user, callback) => {
   db(
     `INSERT INTO users (name,email,password) values ('${user.name}','${user.email}','${user.password}')`,
     (err, response) => {
-      if(err != null){
+      if(err != null) {
          callback(err);
       } else {
         callback(null, response);

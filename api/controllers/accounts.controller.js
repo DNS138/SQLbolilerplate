@@ -158,5 +158,5 @@ const sendSMS = async (req, res, next) => {
         );
 };
 
-export const accountsController = { resetPassword, sendOTP, verifyOTP, setNewPassword, sendSMS };
+export default { resetPassword, sendOTP, verifyOTP, setNewPassword, sendSMS };
 

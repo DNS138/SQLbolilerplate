@@ -1,7 +1,7 @@
 import { GeneralResponse } from '../utils/response.js';
 import { GeneralError, NotFound } from '../utils/error.js';
 
-import { categoriesModel } from '../models/categories.model.js';
+import categoriesModel from '../models/categories.model.js';
 import {config} from '../utils/config.js';
 const errNotFound = 404;
 
@@ -10,7 +10,7 @@ const categoryList = async (req, res, next) => {
   try {
     categoriesModel.getCategories((err, response) => {
       if (err) {
-        next(new NotFound('no categories found'));
+        next(new NotFound('no categories found'), err);
       } else {
         next(new GeneralResponse('categories list', response));
       }
@@ -102,4 +102,4 @@ const removeCategoryById = async (req, res, next) => {
   );
 };
 
-export const categoriesController = { categoryList, getCategoryByCategoryId, addCategory, updateCategory, removeCategoryById };
+export default { categoryList, getCategoryByCategoryId, addCategory, updateCategory, removeCategoryById };

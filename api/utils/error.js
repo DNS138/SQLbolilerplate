@@ -30,3 +30,4 @@ export class NotFound extends GeneralError {}
 export class UnAuthorized extends GeneralError {}
 export class ServiceNotAvailable extends GeneralError {}
 
+

@@ -8,7 +8,7 @@ const client = twilio(accountSid, authToken);
 
 let result = 0;
 
-const sendSms = (number, OTP, callback) => {
+const sendSms = (number, OTP, callback) =>{
     client.messages
         .create({
             body: OTP,

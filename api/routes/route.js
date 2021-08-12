@@ -18,4 +18,4 @@ router.use('/categories', category);
 router.use('/users',user);
 router.use('/accounts',account);
 
-export const mainRouter = router ;
+export const mainRouter = router;

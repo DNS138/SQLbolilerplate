@@ -2,7 +2,7 @@ import Joi from 'joi';
 const minLen = 6;
 const maxLen = 16;
 
-export const authValidation = {
+export default {
 
     login: Joi.object({
         email: Joi.string().required().empty().email().messages({

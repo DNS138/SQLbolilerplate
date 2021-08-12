@@ -72,4 +72,4 @@ const register = async (req, res, next) => {
   }
 };
 
-export const usersController = { userList, getUserByUserId, register };
+export default{ userList, getUserByUserId, register };

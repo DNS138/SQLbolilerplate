@@ -3,7 +3,7 @@ import Joi from 'joi';
 const minLen = 2;
 const maxLen = 128;
 
-export const categoryValidation = {
+export default {
     validateCategory: Joi.object({
         name: Joi.string().required().empty().min(minLen).max(maxLen).messages({
           'string.base': `first name should be a type of 'text'`,

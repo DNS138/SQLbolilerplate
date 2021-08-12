@@ -22,13 +22,15 @@ const sqlConnection = function sqlConnection(sql, values, next) {
     }
   });
 
+
+
   connection.query(sql, values, function (err) {
     connection.end();
 
     if (err) {
         next(new BadRequest('Error in Database Query'),null);
     }
-    next.apply(this.arguments);
+    next.apply(this, arguments);
   });
 };
 

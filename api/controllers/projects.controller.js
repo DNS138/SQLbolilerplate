@@ -1,7 +1,7 @@
 import { GeneralResponse } from '../utils/response.js';
 import { GeneralError, NotFound } from '../utils/error.js';
 import { projectsModel } from '../models/projects.model.js';
-import {config} from '../utils/config.js';
+import { config } from '../utils/config.js';
 const err404 = 'Project not found';
 const errNotFound = 404;
 
@@ -12,16 +12,15 @@ const projectList = async (req, res, next) => {
     projectsModel.getProjects((err, response) => {
       if (err) {
         next(new NotFound('no projects found'));
-      } else {
-        const pathString = 'localhost:5000/uploads/';
-        for (element of response) {
-          element.image = element.image.split(',');
-          for (let j = 0; j < element.image.length; j++) {
-            element.image[j] = pathString.concat(`${element.image[j]}`);
-          }
-        }
-        next(new GeneralResponse('projects list', response));
       }
+      const pathString = 'localhost:5000/uploads/';
+      for (element of response) {
+        element.image = element.image.split(',');
+        for (let j = 0; j < element.image.length; j++) {
+          element.image[j] = pathString.concat(`${element.image[j]}`);
+        }
+      }
+      next(new GeneralResponse('projects list', response));
     });
   } catch (err) {
     next(new GeneralError('error while getting projects list'));
@@ -33,9 +32,9 @@ const getProjectByProjectId = async (req, res, next) => {
 
   try {
     projectsModel.getProjectById(projectid, (err, response) => {
-      if (err == null && response.length === 0 ) {
+      if (err == null && response.length === 0) {
         next(new NotFound(err404, err, errNotFound));
-      }else {
+      } else {
         const pathString = 'localhost:5000/uploads/';
         response[0].image = response[0].image.split(',');
         for (let j = 0; j < response[0].image.length; j++) {
@@ -58,9 +57,9 @@ const addProject = async (req, res, next) => {
     { title, description, categoryId, image },
     arrayString,
     (err, response) => {
-      if (err != null || response.affectedRows === 0){
+      if (err != null || response.affectedRows === 0) {
         next(new GeneralError('Adding porject failed'));
-      }else{
+      } else {
         next(
           new GeneralResponse(
             'Project successfully added',
@@ -83,11 +82,11 @@ const updateProject = async (req, res, next) => {
     projectid,
     { title, description, categoryId, image },
     (err, response) => {
-      if(typeof response !== 'undefined' && response.affectedRows === 0){
+      if (typeof response !== 'undefined' && response.affectedRows === 0) {
         next(new NotFound(err404, err, errNotFound));
-      }else if(err){
+      } else if (err) {
         next(new GeneralError('Updating project failed'));
-      }else{
+      } else {
         next(
           new GeneralResponse(
             'Project successfully updated',
@@ -106,11 +105,11 @@ const removeProjectById = async (req, res, next) => {
   projectsModel.removeOneProject(
     projectid,
     (err, response) => {
-      if (err){
+      if (err) {
         next(new GeneralError('removing project failed'));
-      }else if(response && response.affectedRows === 0){
+      } else if (response && response.affectedRows === 0) {
         next(new NotFound(err404, err, errNotFound));
-      }else{
+      } else {
         next(
           new GeneralResponse(
             'project successfully removed',
@@ -123,5 +122,5 @@ const removeProjectById = async (req, res, next) => {
   );
 };
 
-export const projectsController = { projectList, getProjectByProjectId, addProject, updateProject, removeProjectById };
+export default { projectList, getProjectByProjectId, addProject, updateProject, removeProjectById };
 

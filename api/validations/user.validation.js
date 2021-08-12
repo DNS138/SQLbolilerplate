@@ -3,7 +3,7 @@ import Joi from 'joi';
 const minLen = 6;
 const maxLen = 16;
 
-export const userValidation = {
+export default {
   register: Joi.object({
     name: Joi.string().required().empty().messages({
       'string.base': `first name should be a type of 'text'`,

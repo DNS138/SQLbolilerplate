@@ -2,8 +2,8 @@ import express from 'express';
 const router = express.Router();
 import { validator } from '../../helpers/validator.helper.js';
 import { authenticate } from '../../helpers/auth.helper.js';
-import { accountValidation } from '../../validations/account.validation.js';
-import { accountsController } from '../../controllers/accounts.controller.js';
+import accountValidation from '../../validations/account.validation.js';
+import accountsController from '../../controllers/accounts.controller.js';
 
 router.put('/reset', [ authenticate, validator.body(accountValidation.validatePassword) ], accountsController.resetPassword);
 router.post('/forget/email', validator.body(accountValidation.validateEmail), accountsController.sendOTP);

@@ -14,4 +14,4 @@ const handleResponse = (response, req, res, next) => {
     return 0;
 };
 
-export const responseHelper = handleResponse;
+export default handleResponse;

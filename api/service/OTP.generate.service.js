@@ -3,7 +3,7 @@ const genOtp = () => {
 
     let OTP = Math.random();
     OTP = OTP * maxOtp;
-    OTP = parseInt(OTP, 10);
+    OTP = parseInt(OTP, 10) ;
     return OTP;
 };
 

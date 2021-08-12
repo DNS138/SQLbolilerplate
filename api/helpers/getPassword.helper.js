@@ -6,7 +6,7 @@ export const getPassword = function getPass(userid) {
     db(`Select password from users where id = '${userid}'`, (err, result) => {
         if(err) {
             password = err;
-        } else {
+        }else {
             password = result;
         }
     });

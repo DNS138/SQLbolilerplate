@@ -4,7 +4,7 @@ import { UnAuthorized } from '../utils/error.js';
 const seven = 7;
 export const authenticate = (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers['authorization'];
-  if (token) {
+  if (token){
     if (token.startsWith('Bearer ')) {
       token = token.slice(seven, token.length);
     }
