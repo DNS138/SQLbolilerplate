@@ -4,8 +4,9 @@ import { projectsModel } from '../models/projects.model.js';
 import { config } from '../utils/config.js';
 const err404 = 'Project not found';
 const errNotFound = 404;
+const forignKeyConstraint = 1452;
 
-
+let element;
 const projectList = async (req, res, next) => {
 
   try {
@@ -37,7 +38,7 @@ const getProjectByProjectId = async (req, res, next) => {
       } else {
         const pathString = 'localhost:5000/uploads/';
         response[0].image = response[0].image.split(',');
-        for (let j = 0; j < response[0].image.length; j++) {
+        for(let j = 0; j < response[0].image.length && response[0].image[j] !== '' ; j++) {
           response[0].image[j] = pathString.concat(`${response[0].image[j]}`);
         }
         next(new GeneralResponse('project detail found', response));
@@ -57,8 +58,13 @@ const addProject = async (req, res, next) => {
     { title, description, categoryId, image },
     arrayString,
     (err, response) => {
-      if (err != null || response.affectedRows === 0) {
-        next(new GeneralError('Adding porject failed'));
+      if (err && response && response.affectedRows === 0) {
+        if(err.errno === forignKeyConstraint){
+          next(new NotFound('Categorty not found. Please enter valid category'));
+        }
+        if(err.errno !== undefined){
+          next(new GeneralError('Adding porject failed'));
+        }
       } else {
         next(
           new GeneralResponse(

@@ -7,7 +7,7 @@ import { GeneralError, UnAuthorized } from '../utils/error.js';
 import { accountsModel } from '../models/accounts.model.js';
 import { config } from '../utils/config.js';
 import { getPassword } from '../helpers/getPassword.helper.js';
-import { isValidMail } from '../helpers/isValidEmail.helper.js';
+import {isValidMail} from '../helpers/isValidEmail.helper.js';
 
 import { sendSmS } from '../service/OTP.sms.service.js';
 import { sendEmail } from '../service/OTP.email.service.js';
@@ -52,34 +52,33 @@ const resetPassword = async (req, res, next) => {
 
 
 let OTP;
+OTP = generateOTP();
 
 const sendOTP = async (req, res, next) => {
     const email = req.body.email;
-    OTP = generateOTP();
-
-    const valid = isValidMail(email);
-
-    if (valid) {
-        sendEmail(
-            email,
-            OTP,
-            (err, response) => {
-                if (err && !response) {
-                    next(new GeneralError('Sending email failed'));
-                }else{
-                    next(
-                        new GeneralResponse(
-                            'Verification Email successfully sent',
-                            undefined,
-                            config.SUCCESS
-                        )
-                    );
+    isValidMail(email, (error, result) => {
+        if(result && result.length > 0){
+            sendEmail(
+                email,
+                OTP.toString(),
+                (err, response) => {
+                    if (err && !response) {
+                        next(new GeneralError('Sending email failed'));
+                    }else{
+                        next(
+                            new GeneralResponse(
+                                'Verification Email successfully sent',
+                                undefined,
+                                config.SUCCESS
+                            )
+                        );
+                    }
                 }
-            }
-        );
-    }else {
-        next(new UnAuthorized('enter registered email'));
-    }
+            );
+        }else{
+            next(new UnAuthorized('enter registered email'));
+        }
+    });
 };
 
 

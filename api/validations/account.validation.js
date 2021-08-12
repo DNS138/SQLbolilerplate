@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 const minLen = 6;
 const maxLen = 16;
-const otp = 6;
+const otp = 1000000;
 const phone = 10;
 
 export default {
@@ -60,7 +60,7 @@ export default {
     ),
 
     validateOTP: Joi.object({
-        OTP: Joi.string().required().empty().regex(/^[0-9]{6}$/).min(otp).max(otp).messages({
+        OTP: Joi.number().required().max(otp).messages({
             'string.pattern.base': 'OTP must contain 6 digits'}
         )}
     ),

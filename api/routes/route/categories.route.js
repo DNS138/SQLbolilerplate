@@ -10,7 +10,7 @@ const pathString = 'categoryid';
 
 router.get('/', categoriesController.categoryList);
 router.get(`/:${pathString}`, categoriesController.getCategoryByCategoryId);
-router.post('/', [validator.body(categoryValidation.validateCategory)], categoriesController.addCategory);
+router.post('/', [ authenticate, validator.body(categoryValidation.validateCategory)], categoriesController.addCategory);
 router.put(`/:${pathString}`, [authenticate, validator.body(categoryValidation.validateCategory)], categoriesController.updateCategory);
 router.delete(`/:${pathString}`, authenticate, categoriesController.removeCategoryById);
 

@@ -22,8 +22,6 @@ const sqlConnection = function sqlConnection(sql, values, next) {
     }
   });
 
-
-
   connection.query(sql, values, function (err) {
     connection.end();
 
